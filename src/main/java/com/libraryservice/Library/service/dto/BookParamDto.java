@@ -1,6 +1,7 @@
 package com.libraryservice.Library.service.dto;
 
 import com.libraryservice.Library.service.exception.CreateGroup;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class BookParamDto {
 
-    @NotNull(groups = CreateGroup.class)
+    @NotEmpty(groups = CreateGroup.class)
     private String isbn;
     @NotNull(groups = CreateGroup.class)
     private String title;

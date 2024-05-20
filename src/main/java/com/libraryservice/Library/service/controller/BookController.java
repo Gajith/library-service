@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -26,11 +27,11 @@ public class BookController {
     }
 
     @PostMapping("/book")
-    public ResponseEntity<BookDto> addNewBook(@RequestBody @Validated(CreateGroup.class) BookParamDto bookDto, BindingResult result) throws DataValidationException {
+    public ResponseEntity<BookDto> addNewBook(@RequestBody @Validated(CreateGroup.class) BookParamDto bookDto, BindingResult result, Locale locale) throws DataValidationException {
         if(result.hasErrors()){
             throw new DataValidationException(result);
         }
-        return new ResponseEntity<>(bookService.addBook(bookDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(bookService.addBook(bookDto,locale), HttpStatus.CREATED);
     }
 
     @GetMapping("/books")

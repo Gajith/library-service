@@ -10,13 +10,18 @@ import com.libraryservice.Library.service.repository.BorrowerBookRepository;
 import com.libraryservice.Library.service.repository.BorrowerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
 public class BorrowerService {
+
+    private final MessageSource messageSource;
+
 
     private final BorrowerRepository borrowerRepository;
     private final BookInventoryRepository bookInventoryRepository;
@@ -24,7 +29,8 @@ public class BorrowerService {
     private final BookRepository bookRepository;
 
     @Autowired
-    public BorrowerService(BorrowerRepository borrowerRepository, BookInventoryRepository bookInventoryRepository, BorrowerBookRepository borrowerBookRepository, BookRepository bookRepository) {
+    public BorrowerService(MessageSource messageSource, BorrowerRepository borrowerRepository, BookInventoryRepository bookInventoryRepository, BorrowerBookRepository borrowerBookRepository, BookRepository bookRepository) {
+        this.messageSource = messageSource;
         this.borrowerRepository = borrowerRepository;
         this.bookInventoryRepository = bookInventoryRepository;
         this.borrowerBookRepository = borrowerBookRepository;
@@ -39,7 +45,7 @@ public class BorrowerService {
     }
 
     @Transactional
-    public String borrow(Integer borrowerId, Integer bookId) throws ResourceNotFoundException {
+    public String borrow(Integer borrowerId, Integer bookId, Locale locale) throws ResourceNotFoundException {
         Optional<List<BookInventory>> bookInventories = bookInventoryRepository.findByBookIdBookId(bookId);
         if (bookInventories.isPresent() && !bookInventories.get().isEmpty()) {
             Optional<BookInventory> inventory = bookInventories.get().stream().filter(bookInventory -> bookInventory.getAvailable().equals(true)).findFirst();
@@ -49,24 +55,24 @@ public class BorrowerService {
                 bookInventoryRepository.save(book);
                 borrowerBookRepository.save(new BorrowerBook(borrowerId, bookId));
             } else {
-                throw new ResourceNotFoundException("Request book is not found");
+                throw new ResourceNotFoundException(messageSource.getMessage("book.is_not_found",null,locale));
             }
 
         } else {
-            throw new ResourceNotFoundException("Request book is not found");
+            throw new ResourceNotFoundException(messageSource.getMessage("book.is_not_found",null,locale));
         }
 
         return "Book is successfully borrowed";
     }
 
-    public BookDto getBorrowedBook(Integer borrowerId, Integer bookId) throws ResourceNotFoundException {
+    public BookDto getBorrowedBook(Integer borrowerId, Integer bookId,Locale locale) throws ResourceNotFoundException {
         Optional<BorrowerBook> borrowBook = borrowerBookRepository.findById(new BorrowerBookPK(borrowerId, bookId));
         BookDto bookDto = null;
         if (borrowBook.isPresent()) {
             Book borrowedBook = bookRepository.findById(bookId).get();
             bookDto = new BookDto(borrowedBook.getBookId(), borrowedBook.getIsbn(), borrowedBook.getTitle(), borrowedBook.getAuthor());
         } else {
-            throw new ResourceNotFoundException("Request borrowed book is not found");
+            throw new ResourceNotFoundException(messageSource.getMessage("book.is_not_found",null,locale));
         }
 
         return bookDto;

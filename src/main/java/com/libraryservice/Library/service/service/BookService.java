@@ -6,25 +6,29 @@ import com.libraryservice.Library.service.exception.DataValidationException;
 import com.libraryservice.Library.service.persistence.Book;
 import com.libraryservice.Library.service.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
 public class BookService {
 
+    private final MessageSource messageSource;
     private final BookRepository bookRepository;
 
     @Autowired
-    public BookService(BookRepository bookRepository) {
+    public BookService(MessageSource messageSource, BookRepository bookRepository) {
+        this.messageSource = messageSource;
         this.bookRepository = bookRepository;
     }
 
-    public BookDto addBook(BookParamDto bookDto) throws DataValidationException {
+    public BookDto addBook(BookParamDto bookDto, Locale locale) throws DataValidationException {
         BookDto newBookDto = null;
         if (bookRepository.findByIsbn(bookDto.getIsbn()).isPresent()) {
-            throw new DataValidationException("Book exists for given isbn");
+            throw new DataValidationException(messageSource.getMessage("book.exists_for_given_isbn",null,locale));
         } else {
             Book newBook = new Book(bookDto.getIsbn(), bookDto.getTitle(), bookDto.getAuthor());
             newBook = bookRepository.save(newBook);

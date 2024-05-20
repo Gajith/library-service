@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Locale;
+
 @RestController
 @RequestMapping("/api/v1/borrower")
 public class BorrowerController {
@@ -33,13 +35,13 @@ public class BorrowerController {
     }
 
     @PostMapping("/{id}/book/{book_id}")
-    public ResponseEntity<String> borrow(@PathVariable("id") Integer id, @PathVariable("book_id") Integer bookId) throws ResourceNotFoundException {
-        return ResponseEntity.ok(borrowerService.borrow(id, bookId));
+    public ResponseEntity<String> borrow(@PathVariable("id") Integer id, @PathVariable("book_id") Integer bookId, Locale locale) throws ResourceNotFoundException {
+        return ResponseEntity.ok(borrowerService.borrow(id, bookId,locale));
     }
 
     @GetMapping("/{id}/book/{book_id}")
-    public ResponseEntity<BookDto> getBorrowedBook(@PathVariable("id") Integer id, @PathVariable("book_id") Integer bookId) throws ResourceNotFoundException {
-        return ResponseEntity.ok(borrowerService.getBorrowedBook(id, bookId));
+    public ResponseEntity<BookDto> getBorrowedBook(@PathVariable("id") Integer id, @PathVariable("book_id") Integer bookId,Locale locale) throws ResourceNotFoundException {
+        return ResponseEntity.ok(borrowerService.getBorrowedBook(id, bookId,locale));
     }
 
 
