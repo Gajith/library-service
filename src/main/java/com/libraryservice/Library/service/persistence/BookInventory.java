@@ -5,8 +5,10 @@
 package com.libraryservice.Library.service.persistence;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 
 /**
@@ -14,6 +16,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "book_inventory")
+@Data
 public class BookInventory implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,7 +28,7 @@ public class BookInventory implements Serializable {
     @Column(name = "available")
     private Boolean available;
     @JoinColumn(name = "book_id", referencedColumnName = "book_id")
-    @OneToOne
+    @ManyToOne
     private Book bookId;
 
     public BookInventory() {
@@ -35,29 +38,7 @@ public class BookInventory implements Serializable {
         this.inventoryId = inventoryId;
     }
 
-    public Integer getInventoryId() {
-        return inventoryId;
-    }
 
-    public void setInventoryId(Integer inventoryId) {
-        this.inventoryId = inventoryId;
-    }
-
-    public Boolean getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(Boolean available) {
-        this.available = available;
-    }
-
-    public Book getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Book bookId) {
-        this.bookId = bookId;
-    }
 
     @Override
     public int hashCode() {

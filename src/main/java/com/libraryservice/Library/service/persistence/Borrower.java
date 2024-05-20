@@ -5,6 +5,7 @@
 package com.libraryservice.Library.service.persistence;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "borrower")
+@Data
 public class Borrower implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,38 +45,6 @@ public class Borrower implements Serializable {
         this.borrowerId = borrowerId;
         this.name = name;
         this.email = email;
-    }
-
-    public Integer getBorrowerId() {
-        return borrowerId;
-    }
-
-    public void setBorrowerId(Integer borrowerId) {
-        this.borrowerId = borrowerId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<BorrowerBook> getBorrowerBookList() {
-        return borrowerBookList;
-    }
-
-    public void setBorrowerBookList(List<BorrowerBook> borrowerBookList) {
-        this.borrowerBookList = borrowerBookList;
     }
 
     @Override

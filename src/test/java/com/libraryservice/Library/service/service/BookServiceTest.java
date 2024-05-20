@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -23,9 +24,8 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class BookServiceTest {
 
-    @Mock
-    private BookRepository bookRepository;
-    @InjectMocks
+
+    @Autowired
     private BookService service;
 
     private BookDto bookDto1;
@@ -34,8 +34,8 @@ public class BookServiceTest {
 
     @Test
     public void is_Book_New_Added(){
-        BookParamDto newBook = new BookParamDto("102-133","TestTitle","TestAuthor");
-        BookDto newBk =service.addBook(newBook);
+        BookParamDto newBook = new BookParamDto("102-1331","TestTitle","TestAuthor");
+        BookDto newBk =service.addBook(newBook, Locale.US);
         assert(newBk.getBookId()>0);
     }
 
@@ -43,7 +43,7 @@ public class BookServiceTest {
     public void is_Book_Added_Same_ISBN(){
         BookParamDto newBook = new BookParamDto("102-133","TestTitle1","TestAuthor2");
         //BookDto newBk =
-        assertThrows(DataValidationException.class,()->service.addBook(newBook));
+        assertThrows(DataValidationException.class,()->service.addBook(newBook,Locale.US));
     }
 
     @Test

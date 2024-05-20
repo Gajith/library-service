@@ -5,14 +5,17 @@
 package com.libraryservice.Library.service.persistence;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author gajit
  */
 @Entity
 @Table(name = "book")
+@Data
 public class Book implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,10 +33,11 @@ public class Book implements Serializable {
     @Basic(optional = false)
     @Column(name = "author")
     private String author;
-    @OneToOne(mappedBy = "bookId")
-    private BookInventory bookInventory;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "book")
     private BorrowerBook borrowerBook;
+    @OneToMany(mappedBy = "bookId")
+    private List<BookInventory> bookInventoryCollection;
+
 
     public Book() {
     }
@@ -48,53 +52,6 @@ public class Book implements Serializable {
         this.author = author;
     }
 
-    public Integer getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Integer bookId) {
-        this.bookId = bookId;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public BookInventory getBookInventory() {
-        return bookInventory;
-    }
-
-    public void setBookInventory(BookInventory bookInventory) {
-        this.bookInventory = bookInventory;
-    }
-
-    public BorrowerBook getBorrowerBook() {
-        return borrowerBook;
-    }
-
-    public void setBorrowerBook(BorrowerBook borrowerBook) {
-        this.borrowerBook = borrowerBook;
-    }
 
     @Override
     public int hashCode() {
