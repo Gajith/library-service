@@ -1,5 +1,5 @@
 ## Library service 
-The API should allow the API user to perform the following actions:
+The API  allows the API user to perform the following actions:
 1. Register a new borrower to the library.
 2. Register a new book in the library.
 3. Get a list of all books in the library.
