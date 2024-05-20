@@ -23,3 +23,9 @@ http://localhost:8080/library-service/swagger-ui/index.html#/
 
 ![image](https://github.com/Gajith/library-service/assets/5626717/af9f9a9a-2f48-4d49-bc78-917bb96433c5)
 
+## Tech Stack
+1. Java 17
+2. Spring Boot 3.2.5
+3. MySql 8
+4. Maven
+   
