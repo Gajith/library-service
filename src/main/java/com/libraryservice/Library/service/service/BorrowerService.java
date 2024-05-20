@@ -9,6 +9,7 @@ import com.libraryservice.Library.service.repository.BookRepository;
 import com.libraryservice.Library.service.repository.BorrowerBookRepository;
 import com.libraryservice.Library.service.repository.BorrowerRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class BorrowerService {
 
     private final MessageSource messageSource;
@@ -55,6 +57,7 @@ public class BorrowerService {
                 bookInventoryRepository.save(book);
                 borrowerBookRepository.save(new BorrowerBook(borrowerId, bookId));
             } else {
+                log.debug("requested book is not found :BookId"+bookId+"by borrower id:"+borrowerId);
                 throw new ResourceNotFoundException(messageSource.getMessage("book.is_not_found",null,locale));
             }
 
